@@ -1,39 +1,18 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import 'source-map-support/register';
 import 'jest';
-import generate from 'nanoid/generate';
-import { Pool } from 'pg';
+import { connectTestDatabase } from '@fmtk/dbtest';
 import { makePgPoolClient } from '../pg/makePgPoolClient';
 import { nonQuery } from '../commands/nonQuery';
 import { sql } from '../core/sql';
 import { single } from '../commands/single';
-
-const nanoid = () => generate('0123456789abcdefghijklmnopqrstuvwxyz', 15);
+import { transaction } from '../commands/transaction';
 
 describe('smoke test', () => {
-  let dbName: string | undefined;
-  const dbUser = process.env.DB_USER || 'postgres';
-  let pool: Pool | undefined;
-
-  beforeAll(async () => {
-    dbName = process.env.DB_NAME || `test_${nanoid()}`;
-    pool = new Pool({ database: 'postgres', user: dbUser });
-    await pool.query(`CREATE DATABASE ${dbName}`);
-    await pool.end();
-    pool = new Pool({ database: dbName, user: dbUser });
-  });
-
-  afterAll(async () => {
-    if (pool) {
-      await pool.end();
-      pool = new Pool({ database: 'postgres', user: dbUser });
-      await pool.query(`DROP DATABASE ${dbName}`);
-      await pool.end();
-    }
-  });
+  const context = connectTestDatabase();
 
   it('passes', async () => {
-    const client = makePgPoolClient(pool!);
+    const client = makePgPoolClient(context.pool);
 
     await client(
       nonQuery(sql`
@@ -54,7 +33,7 @@ describe('smoke test', () => {
     expect(n).toEqual(1);
 
     const person = await client(
-      single(sql`SELECT * FROM people WHERE id=${1}`),
+      transaction(db => db(single(sql`SELECT * FROM people WHERE id=${1}`))),
     );
 
     expect(person).toEqual({

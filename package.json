@@ -8,7 +8,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.18",
-    "@types/nanoid": "^2.0.0",
     "@types/node": "^12.7.8",
     "@types/pg": "^7.11.2",
     "@typescript-eslint/eslint-plugin": "^2.3.2",
@@ -17,7 +16,6 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "nanoid": "^2.1.2",
     "pg": "^7.12.1",
     "prettier": "^1.18.2",
     "source-map-support": "^0.5.13",
@@ -45,5 +43,7 @@
     "preversion": "npm run build",
     "test": "jest"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@fmtk/dbtest": "^0.1.1"
+  }
 }

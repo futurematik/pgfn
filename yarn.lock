@@ -138,6 +138,16 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@fmtk/dbtest@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/@fmtk/dbtest/-/dbtest-0.1.1.tgz#5ba67647870d0aa346f99346f7c5dfb8afc3e1df"
+  integrity sha512-TOhvaXZ2BbSLJYSGYcnCB4X9ujxqfdxdyuSMOTe6kvmrwcwn5IMIwNk0qL0uzdhKvUzY3wKQlz1tRDhLS2D4gA==
+  dependencies:
+    "@types/pg" "^7.11.2"
+    jest "^24.9.0"
+    nanoid "^2.1.2"
+    pg "^7.12.1"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.npmjs.org/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"

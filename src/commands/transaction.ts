@@ -9,12 +9,12 @@ import { DbError } from '../core/DbError';
 import { verbatim } from '../core/Verbatim';
 
 export enum TransactionIsolation {
-  Snapshot = 'SNAPSHOT',
+  Serializable = 'SERIALIZABLE',
 }
 
 export function transaction<T>(
   cmd: DbCommand<T>,
-  isolation = TransactionIsolation.Snapshot,
+  isolation = TransactionIsolation.Serializable,
 ): DbCommand<T> {
   return async (db): Promise<T> => {
     if (isTransacting(db)) {
@@ -24,7 +24,7 @@ export function transaction<T>(
     txdb[TransactingSymbol] = true;
 
     try {
-      await db(sql`BEGIN TRANSACTION ${verbatim(isolation)}`);
+      await db(sql`BEGIN TRANSACTION ISOLATION LEVEL ${verbatim(isolation)}`);
       const result = await cmd(db);
       await db(sql`COMMIT`);
       return result;
